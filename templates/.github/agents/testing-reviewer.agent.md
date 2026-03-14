@@ -1,7 +1,7 @@
 ---
 name: testing-reviewer
 description: Reviews test coverage, edge cases, failure modes, mock correctness, and async patterns
-model: claude-opus-4.6
+model: claude-opus-4-6
 tools:
   - read_file
   - search_code

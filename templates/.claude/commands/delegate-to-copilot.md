@@ -60,7 +60,7 @@ Type: IMPLEMENTATION
 - [ ] All tests pass
 - [ ] Lint clean
 - [ ] Typecheck clean
-- [ ] All 6 reviewers grade >= 95/A+
+- [ ] All 25 reviewers grade >= 95/A+
 
 ## Execution Instructions
 1. Read this entire plan
@@ -88,7 +88,7 @@ Branch: main
 Type: REVIEW + FIX
 
 ## Objective
-Review the following code and fix all findings until all 6 reviewers grade >= 95/A+.
+Review the following code and fix all findings until all 25 reviewers grade >= 95/A+.
 
 ## What to Review
 [List of PRs, files, or changes to audit]
@@ -103,7 +103,7 @@ Review the following code and fix all findings until all 6 reviewers grade >= 95
 1. Create a new branch: `fix/copilot-audit-[date]`
 2. Read ALL files listed above
 3. Invoke @review-pipeline on these files
-4. Fix ALL findings (BLOCK + WARN + INFO) from all 6 reviewers
+4. Fix ALL findings (BLOCK + WARN + INFO) from all 25 reviewers
 5. Re-run @review-pipeline until all grade >= 95/A+
 6. Run verification gate (tests + lint + typecheck)
 7. Create PR with grades table
@@ -113,7 +113,7 @@ Review the following code and fix all findings until all 6 reviewers grade >= 95
 [Specific areas to focus on, based on what the PRs did]
 
 ## Acceptance Criteria
-- [ ] All 6 reviewers grade >= 95/A+
+- [ ] All 25 reviewers grade >= 95/A+
 - [ ] All tests pass
 - [ ] Lint clean
 - [ ] Typecheck clean

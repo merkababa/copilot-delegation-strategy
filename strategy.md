@@ -3,7 +3,7 @@
 ## TL;DR
 
 - **Keep 1x Claude Code Max $200/mo** — for interactive work, quick questions, planning, and small messages (flat rate = cheaper for high-volume back-and-forth)
-- **Add Copilot Pro+ $39/mo** — for sprint execution with Opus 4.6 orchestrator + model-tiered subagents
+- **Add Copilot Pro+ $39/mo** — for sprint execution with Opus 4.6 everywhere (all 25 reviewers + executors)
 - **Drop 2x Max accounts** — saving **$361/month (60%)**
 - **Total: $239/month** instead of $600/month, with equal or better quality
 
@@ -12,7 +12,7 @@
 ### Verified Facts (Corrected from Earlier Errors)
 
 1. **Copilot CLI supports per-subagent model selection** — `model:` frontmatter in `.agent.md` works in CLI (user-confirmed March 2026)
-2. **No hard subagent limit** in either Claude Code or Copilot CLI — user runs 11 reviewers successfully in both
+2. **No hard subagent limit** in either Claude Code or Copilot CLI — user runs 25 reviewers successfully in both
 3. **160K context is sufficient** for all projects — verified against emuni (66K LOC), machmad (15K LOC), tortit (50K LOC), zap-killer (41K LOC). Largest PR (~15 files) uses ~75-100K tokens, well within 160K
 4. **Opus 4.6 at 3x multiplier in Copilot is still massively cheaper** than Claude Code Max — 500 Opus PR sessions/month for $39 vs unlimited for $200
 5. **Model downgrade restriction**: subagents can't exceed orchestrator's multiplier tier, but Opus orchestrator (3x) allows ALL models as subagents
@@ -40,12 +40,9 @@ Your detailed plans ARE the harness. Opus in Copilot (160K) executing a well-spe
 │                                                     │
 │  Orchestrator: Opus 4.6 (3x multiplier)             │
 │  ├── Reads plan.md / issue description              │
-│  ├── Spawns model-tiered subagents:                 │
-│  │   ├── Opus 4.6 → complex logic, security        │
-│  │   ├── Sonnet 4.6 → standard implementation      │
-│  │   └── Haiku 4.5 → trivial tasks, formatting     │
+│  ├── All subagents: Opus 4.6 (no model tiering)    │
 │  ├── Execution: autopilot / fleet mode              │
-│  ├── Reviews: 11 reviewer subagents (Opus 4.6)     │
+│  ├── Reviews: 25 reviewer subagents (Opus 4.6)     │
 │  └── Opens PR with self-review                      │
 │                                                     │
 │  Budget: 1,500 premium reqs/mo                      │
@@ -56,23 +53,19 @@ Your detailed plans ARE the harness. Opus in Copilot (160K) executing a well-spe
 
 ## Model Selection in Copilot
 
-### Orchestrator: Opus 4.6 (3x)
-- Best reasoning for task decomposition and delegation
-- Can assign ANY model to subagents (Opus = highest tier, so no downgrade restriction)
-- 3x multiplier is still dirt cheap vs Claude Code Max
+### Opus Everywhere (No Tiering)
 
-### Subagent Tiering (via .agent.md files)
+**All agents — orchestrator, executors, and all 25 reviewers — use `claude-opus-4.6` (3x multiplier).**
 
-| Task Complexity | Subagent Model | Multiplier | Examples |
-|----------------|---------------|-----------|---------|
-| **Trivial** | Haiku 4.5 | 0.33x | Rename vars, add imports, fix typos |
-| **Standard** | Sonnet 4.6 | 1x | Implement feature from spec, write tests, refactor |
-| **Complex** | Opus 4.6 | 3x | Security-sensitive, multi-file logic, architecture |
-| **Reviews** | Opus 4.6 | 3x | All 11 review perspectives |
+Earlier iterations considered Haiku/Sonnet tiering by task complexity. This was replaced by "Opus everywhere" because:
+
+1. **Budget headroom is massive** — 500 Opus sessions/month in Pro+, actual usage is ~100 sessions (~20% utilization)
+2. **Quality > cost optimization** — Opus catches issues that Sonnet/Haiku miss, and the cost difference is irrelevant at this utilization level
+3. **Simpler architecture** — no model selection logic, no complexity classification, no risk of under-tiering a task
 
 ### Custom Agent Definitions
 
-Create `.github/agents/` in each project:
+Create `.github/agents/` in each project with 25 agent files (see `templates/SETUP.md` for the full list):
 
 ```yaml
 # .github/agents/security-reviewer.agent.md
@@ -95,25 +88,6 @@ You are a security-focused code reviewer. Check for:
 ...
 ```
 
-```yaml
-# .github/agents/standard-executor.agent.md
----
-name: standard-executor
-description: Implements well-specified features from task blocks
-model: claude-sonnet-4.6
-tools:
-  - read_file
-  - edit_file
-  - create_file
-  - run_terminal_cmd
-  - search_code
----
-
-You are a precise code executor. Follow task specifications exactly.
-Never deviate from the spec. Never add unrequested features.
-...
-```
-
 ## What Goes Where
 
 | Activity | Tool | Why |
@@ -122,9 +96,9 @@ Never deviate from the spec. Never add unrequested features.
 | "Fix this small bug" (interactive) | **Claude Code** | Small messages, flat rate cheaper |
 | Planning sprint with 10 tasks | **Claude Code** | Long thinking, 1M context if needed |
 | Executing sprint (10 PRs) | **Copilot CLI** | 10 × 3 = 30 reqs ($1.20 overage if any) |
-| Code review (11 reviewers) | **Copilot CLI** | Per-subagent model selection works |
+| Code review (25 reviewers) | **Copilot CLI** | Per-subagent model selection works |
 | Full app review (major release) | **Either** | Both can do it; Claude Code if >160K context needed |
-| Roadmap across all 5 projects | **Claude Code** | May need cross-project context |
+| Roadmap across all 6 projects | **Claude Code** | May need cross-project context |
 
 ## Cost Breakdown
 
@@ -143,7 +117,7 @@ Never deviate from the spec. Never add unrequested features.
 | Activity | Sessions/mo | Reqs/session | Total Reqs |
 |----------|------------|-------------|------------|
 | Sprint execution (Opus orchestrator) | 50 | 3 | 150 |
-| Code reviews (11 Opus subagents) | 20 sessions | 3 | 60 |
+| Code reviews (25 Opus subagents) | 20 sessions | 3 | 60 |
 | Bug fixes (Opus interactive) | 30 | 3 | 90 |
 | Misc Sonnet tasks | 100 | 1 | 100 |
 | **Total** | | | **400** |
@@ -166,7 +140,7 @@ You won't even come close to the 1,500 limit. You could do **3-4x this volume** 
 | "Preview pricing" on Coding Agent may change | Monitor; worst case you're still under $600/mo |
 | Rate limiting on concurrent sessions | Stagger assignments; use Agent HQ |
 | Session timeout (59 min) | Break large tasks into <59-min chunks |
-| Model downgrade restriction blocks tiering | Use Opus as orchestrator — it's the highest tier, so no restriction applies downward |
+| Model downgrade restriction blocks tiering | N/A — Opus everywhere eliminates this concern entirely |
 
 ## Next Steps
 
@@ -175,7 +149,7 @@ You won't even come close to the 1,500 limit. You could do **3-4x this volume** 
 3. **Create `copilot-instructions.md`** and `AGENTS.md` per project
 4. **Pilot test**: Pick one project, run one sprint through Copilot, compare quality
 5. **Build automation**: Claude Code hook → generates plan → creates GitHub issues → Copilot executes
-6. **Scale**: Roll out to all 5 projects once validated
+6. **Scale**: Roll out to all 6 projects once validated
 7. **Cancel 2 Max accounts** after pilot confirms quality
 
 ## Open Questions

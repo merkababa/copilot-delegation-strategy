@@ -1,7 +1,7 @@
 ---
 name: ux-reviewer
 description: Reviews UI consistency, accessibility, responsive design, and i18n support
-model: claude-opus-4.6
+model: claude-opus-4-6
 tools:
   - read_file
   - search_code

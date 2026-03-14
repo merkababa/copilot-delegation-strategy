@@ -1,7 +1,7 @@
 ---
 name: performance-reviewer
 description: Reviews memory usage, CPU efficiency, bundle size, caching, and optimization patterns
-model: claude-opus-4.6
+model: claude-opus-4-6
 tools:
   - read_file
   - search_code

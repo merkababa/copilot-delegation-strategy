@@ -1,7 +1,7 @@
 ---
 name: architect-reviewer
 description: Reviews system design, scalability, patterns, and component boundaries
-model: claude-opus-4.6
+model: claude-opus-4-6
 tools:
   - read_file
   - search_code

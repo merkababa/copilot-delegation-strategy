@@ -21,12 +21,11 @@
 - `/tasks` shows background task status
 - **All subagents use session's default model** (no per-agent model control)
 
-## Subagent Model Control — Current Limitations
+## Subagent Model Control
 
-- `model:` frontmatter in `.agent.md` files is **IGNORED by CLI** (only works in VS Code)
-- Open feature request: [Issue #1354](https://github.com/github/copilot-cli/issues/1354)
-- Workaround: `/model` or `--model` flag changes session-wide model, not per-subagent
-- **Model downgrade restriction**: subagents can't exceed orchestrator's multiplier tier
+- `model:` frontmatter in `.agent.md` files is **confirmed working in CLI** (user-verified March 2026)
+- Earlier research incorrectly stated this was ignored by CLI — this has been corrected
+- **Model downgrade restriction**: subagents can't exceed orchestrator's multiplier tier (irrelevant when using Opus everywhere)
 
 ## Context Sharing Between Orchestrator and Subagents
 

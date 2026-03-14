@@ -1,7 +1,7 @@
 ---
 name: security-reviewer
 description: Reviews auth flows, data validation, secrets, and OWASP Top 10 compliance
-model: claude-opus-4.6
+model: claude-opus-4-6
 tools:
   - read_file
   - search_code

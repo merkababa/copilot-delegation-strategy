@@ -45,6 +45,16 @@ This means: the **quality of your plan and task decomposition** matters far more
 - Multiplier not yet documented — likely 3x-10x based on precedent
 - Worth monitoring as potential orchestrator once multiplier is known
 
+## Final Decision (March 2026)
+
+**Opus 4.6 everywhere — not GPT-5.2-Codex.** While GPT-5.2-Codex has a better cost ratio (1x multiplier, 400K context), the user chose Claude Opus 4.6 for all agents (orchestrator, executors, and all 25 reviewers) because:
+
+1. Quality over cost — budget headroom is massive (20% utilization of Pro+ at Opus 3x)
+2. Consistency — same model family as Claude Code Max, same reasoning patterns
+3. Simplicity — no model tiering, no complexity classification, no risk of under-tiering
+
+The GPT-5.2-Codex analysis above remains valid for users who need to optimize for cost.
+
 ## Sources
 - [Interconnects.ai — Opus 4.6 vs Codex 5.3](https://www.interconnects.ai/p/opus-46-vs-codex-53)
 - [GitHub Docs — Supported AI models](https://docs.github.com/en/copilot/reference/ai-models/supported-models)

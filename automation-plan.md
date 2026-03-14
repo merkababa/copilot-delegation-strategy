@@ -17,7 +17,7 @@ No automation — validate the workflow manually.
    # then paste: "Implement the task described in issue #N"
    ```
 4. Or use Coding Agent: assign issue to @copilot
-5. Review the PR in Copilot CLI with 11 reviewer subagents
+5. Review the PR in Copilot CLI with 25 reviewer subagents
 6. Compare quality against what Claude Code would have produced
 
 ### Success Criteria
@@ -173,16 +173,16 @@ done
 ```bash
 #!/bin/bash
 # scripts/review-prs.sh
-# Reviews all open PRs from copilot-agent with 11 reviewer agents
+# Reviews all open PRs from copilot-agent with 25 reviewer agents
 
 PRS=$(gh pr list --label "copilot-agent" --state open --json number -q '.[].number')
 
 for PR_NUM in $PRS; do
-  echo "Reviewing PR #$PR_NUM with 11 agents..."
+  echo "Reviewing PR #$PR_NUM with 25 agents..."
 
   DIFF=$(gh pr diff "$PR_NUM")
 
-  copilot -p "/fleet Review this PR from 11 perspectives using these agents:
+  copilot -p "/fleet Review this PR from 25 perspectives using these agents:
   @reviewer-security
   @reviewer-performance
   @reviewer-architecture

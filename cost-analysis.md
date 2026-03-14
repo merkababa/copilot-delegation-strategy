@@ -3,8 +3,8 @@
 ## Current Setup
 - 3x Claude Max $200/mo accounts = **$600/month ($7,200/year)**
 - All 3 accounts fully drained
-- 5 concurrent projects: emuni, machmad, zap-killer, tortit, + 1 more
-- Roadmaps, 4-5 agent pipeline reviews, 11-reviewer app/phase reviews
+- 6 concurrent projects: BabyTracker, emuni, Machmad, Tortit, vaad-bayit, zap-killer
+- Roadmaps, 4-5 agent pipeline reviews, 25-reviewer app/phase reviews
 - 90% of execution delegated to Sonnet 4.6 by Opus orchestrator
 
 ## Proposed Setup
@@ -60,7 +60,7 @@ You'd use only **20% of Pro+ budget** with Opus everywhere. No reason to downgra
 | Activity | Volume | Model | Multiplier | Total Reqs |
 |----------|--------|-------|-----------|------------|
 | Sprint execution | 50 sessions | Opus 4.6 | 3x | 150 |
-| Code reviews (11 agents) | 20 sessions | Opus 4.6 | 3x | 60 |
+| Code reviews (25 agents) | 20 sessions | Opus 4.6 | 3x | 60 |
 | Bug fixes | 30 sessions | Opus 4.6 | 3x | 90 |
 | Standard tasks | 100 turns | Sonnet 4.6 | 1x | 100 |
 | **Total** | | | | **400** |

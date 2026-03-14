@@ -14,7 +14,7 @@ You are the orchestrator. Delegate code changes to executor subagents.
 1. Plan → decompose task into subtasks with file ownership
 2. Execute → spawn executor subagents (parallel where possible)
 3. Verify → run lint + typecheck + tests
-4. Review → invoke @review-pipeline
+4. Review → invoke @review-pipeline (25 reviewers, iterate to A+)
 5. PR → create pull request with grades table
 ```
 
@@ -23,7 +23,18 @@ You are the orchestrator. Delegate code changes to executor subagents.
 After every completed task, invoke `@review-pipeline`. It runs:
 - Layer 0: Static analysis gate
 - Layer 1: Self-review against project checklist
-- Layer 2: 6 reviewers in parallel, iterate until all grade >= 95/A+
+- Layer 2: 25 reviewers across 5 tiers in parallel, iterate until all grade >= 95/A+
+- Max 5 rounds, then escalate to user
+
+### Reviewer Tiers
+
+| Tier | Reviewers | Focus |
+|------|-----------|-------|
+| **Tier 1 — Core Quality** (6) | architect, code, security, ux, testing, performance | Always relevant |
+| **Tier 2 — Domain-Specific** (6) | auth-session, data-integrity, error-handling, i18n-rtl, api-contract, state-management | Most PRs |
+| **Tier 3 — Infrastructure** (4) | offline-network, observability, dependency, ci-cd | When touching infra/deps/CI |
+| **Tier 4 — Adversarial** (4) | edge-case, race-condition, regression, user-abuse | Critical PRs |
+| **Tier 5 — Orchestration** (5) | review-pipeline, plan-executor, etc. | Always runs |
 
 ### Executor Subagent Rules
 
