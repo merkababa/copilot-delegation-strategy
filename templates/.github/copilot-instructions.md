@@ -20,7 +20,7 @@
 
 **When running in Copilot CLI or VS Code Copilot, IGNORE the review pipeline in CLAUDE.md. This pipeline REPLACES it entirely.**
 
-Copilot's cost model allows a strictly better pipeline: **25 reviewers across 5 tiers, cooperative iteration until 95/A+.**
+**Core principle: inspect what changed, then select 6-12 relevant reviewers from the 20-reviewer roster. Never blindly run all reviewers.**
 
 ### Layer 0: Static Analysis Gate
 
@@ -43,57 +43,70 @@ Before spawning reviewers:
 4. Re-run Layer 0
 5. Then proceed to Layer 2
 
-### Layer 2: 25-Reviewer Panel (ALL run in parallel via /fleet)
+### Layer 2: Triage → Select → Review
 
-#### Tier 1 — Core Quality (always relevant)
+#### Step 1: Triage — Inspect What Changed
 
-| # | Role | Agent | Focus |
-|---|------|-------|-------|
-| 1 | **Architect** | `@architect-reviewer` | System design, scalability, patterns, component boundaries |
-| 2 | **Code Quality** | `@code-reviewer` | TypeScript/language strictness, maintainability, DRY, naming |
-| 3 | **Security** | `@security-reviewer` | Auth, data validation, secrets, OWASP Top 10 |
-| 4 | **UX & Accessibility** | `@ux-reviewer` | UI consistency, a11y, responsive design, i18n |
-| 5 | **Testing** | `@testing-reviewer` | Coverage, edge cases, failure modes, mock correctness |
-| 6 | **Performance** | `@performance-reviewer` | Memory, CPU, bundle size, network, caching |
+Analyze the diff to classify:
+- **Domains touched**: UI, API, auth, data/schema, state, payments, i18n, tests, infra, CI/CD, deps
+- **Risk level**: routine (docs, tests, refactors) vs critical (auth, payments, data migrations)
+- **Scope**: narrow (1-3 files) vs broad (many files, cross-cutting)
 
-#### Tier 2 — Domain-Specific (most PRs)
+#### Step 2: Select 6-12 Reviewers
 
-| # | Role | Agent | Focus |
-|---|------|-------|-------|
-| 7 | **Auth & Session** | `@auth-session-reviewer` | Auth flows, session management, token handling, RBAC |
-| 8 | **Data Integrity** | `@data-integrity-reviewer` | Schema validation, migration safety, type alignment |
-| 9 | **Error Handling** | `@error-handling-reviewer` | Try-catch coverage, error boundaries, user messages, crash context |
-| 10 | **i18n & RTL** | `@i18n-rtl-reviewer` | Translation quality, RTL layout, locale formatting, key completeness |
-| 11 | **API Contract** | `@api-contract-reviewer` | Request/response shapes, validation, breaking changes, backward compat |
-| 12 | **State Management** | `@state-management-reviewer` | Store patterns, cache strategy, stale state, race conditions |
+Pick from the 20-reviewer roster based on what the PR actually touches.
 
-#### Tier 3 — Infrastructure & Ops (when touching infra/deps/CI)
+**Tier 1 — Core Quality (select all that apply):**
 
-| # | Role | Agent | Focus |
-|---|------|-------|-------|
-| 13 | **Offline & Network** | `@offline-network-reviewer` | Offline behavior, network errors, retry logic, sync conflicts |
-| 14 | **Observability** | `@observability-reviewer` | Error reporting context, analytics, structured logging, monitoring |
-| 15 | **Dependency** | `@dependency-reviewer` | Package health, deprecated deps, security advisories, bundle impact |
-| 16 | **CI/CD** | `@ci-cd-reviewer` | Pipeline impact, migration safety, deployment order, env config |
+| Role | Agent | Select When |
+|------|-------|------------|
+| **Code Quality** | `@code-reviewer` | **Always** — every PR |
+| **Architect** | `@architect-reviewer` | New files, new patterns, cross-module changes |
+| **Security** | `@security-reviewer` | Auth, input, API endpoints, data access, config |
+| **Testing** | `@testing-reviewer` | New features, bug fixes, logic changes |
+| **Performance** | `@performance-reviewer` | Loops, queries, rendering, caching, bundle |
+| **UX & A11y** | `@ux-reviewer` | UI components, user-facing text, navigation |
 
-#### Tier 4 — Adversarial & Regression (critical PRs)
+**Tier 2 — Domain-Specific (select when domain is touched):**
 
-| # | Role | Agent | Focus |
-|---|------|-------|-------|
-| 17 | **Edge Cases** | `@edge-case-reviewer` | Boundary values, empty states, null/undefined, scale limits, timezone |
-| 18 | **Race Conditions** | `@race-condition-reviewer` | Async timing, double-submit, stale closures, concurrent writes |
-| 19 | **Regression** | `@regression-reviewer` | Cross-feature impact, shared component changes, type contract breaks |
-| 20 | **User Abuse** | `@user-abuse-reviewer` | XSS, injection, unauthorized access, rate abuse, input validation bypass |
+| Role | Agent | Select When |
+|------|-------|------------|
+| **Auth & Session** | `@auth-session-reviewer` | Auth flows, tokens, RBAC, login/logout |
+| **Data Integrity** | `@data-integrity-reviewer` | Schemas, migrations, type changes, transforms |
+| **Error Handling** | `@error-handling-reviewer` | Try-catch, error boundaries, fallback UI |
+| **i18n & RTL** | `@i18n-rtl-reviewer` | Translation files, user-facing strings, RTL |
+| **API Contract** | `@api-contract-reviewer` | API routes, request/response, breaking changes |
+| **State Management** | `@state-management-reviewer` | Stores, context, caching, derived state |
 
-#### Tier 5 — Orchestration (always runs)
+**Tier 3 — Infrastructure (select when infra is touched):**
 
-| # | Role | Agent | Focus |
-|---|------|-------|-------|
-| 21-25 | **Pipeline + Executors** | `@review-pipeline`, `@plan-executor`, etc. | Orchestration, execution, coordination |
+| Role | Agent | Select When |
+|------|-------|------------|
+| **Offline & Network** | `@offline-network-reviewer` | Network calls, retry, offline mode, sync |
+| **Observability** | `@observability-reviewer` | Logging, analytics, error reporting |
+| **Dependency** | `@dependency-reviewer` | package.json, lock files, new/updated deps |
+| **CI/CD** | `@ci-cd-reviewer` | CI config, build scripts, deployment, env vars |
 
-<!-- [CUSTOMIZE] Replace/add reviewers relevant to your domain.
-     Examples: @data-reviewer (ML/data pipelines), @mobile-reviewer (iOS/Android specifics),
-     @infra-reviewer (DevOps/IaC) -->
+**Tier 4 — Adversarial (select for critical/risky PRs):**
+
+| Role | Agent | Select When |
+|------|-------|------------|
+| **Edge Cases** | `@edge-case-reviewer` | Complex logic, boundaries, nullable, date/time |
+| **Race Conditions** | `@race-condition-reviewer` | Async flows, concurrent writes, debounce |
+| **Regression** | `@regression-reviewer` | Shared components, widely-imported modules |
+| **User Abuse** | `@user-abuse-reviewer` | User input, public endpoints, rate limits |
+
+<!-- [CUSTOMIZE] Add project-specific reviewers to the roster if needed -->
+
+**Selection rules:**
+- Minimum 6 — always include `@code-reviewer` + 5 others
+- Maximum 12 — if you need more, the PR is probably too large
+- When in doubt, include the reviewer
+- For critical domains (auth, payments, migrations): include all of Tier 4
+
+#### Step 3: Run Selected Reviewers in Parallel (/fleet)
+
+Each reviewer receives the diff, changed file list, and grades on 0-100 with BLOCK/WARN/INFO findings.
 
 ### Grading Scale
 
@@ -105,21 +118,20 @@ Before spawning reviewers:
 
 ### Cooperative Iteration Protocol (Max 5 Rounds)
 
-**Target: ALL 25 reviewers at 95/A+ or above. Iterate until achieved or 5 rounds exhausted.**
+**Target: ALL selected reviewers at 95/A+ or above. Iterate until achieved or 5 rounds exhausted.**
 
 ```
-Round 1: All 25 reviewers run in parallel
+Round 1: Selected reviewers run in parallel
   → Collect ALL findings (BLOCK, WARN, INFO)
   → Fix EVERYTHING in one batch
   → Re-run Layer 0
-Round 2: Re-review with ALL 25 reviewers
+Round 2: Re-run SAME selected reviewers
   → If ALL ≥ 95/A+ → DONE
   → If any < 95/A+ → fix and iterate
+  → If fixes touched a new domain → add that domain's reviewer
 Round N: Continue until ALL pass or Round 5
   → After Round 5 if not at A+ → ESCALATE to user
 ```
-
-**Every round re-reviews ALL 25 reviewers** — not just the ones that failed. Fixes in one area can introduce issues detectable by other reviewers.
 
 ### Reviewer Rules
 

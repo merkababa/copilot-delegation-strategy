@@ -23,18 +23,17 @@ You are the orchestrator. Delegate code changes to executor subagents.
 After every completed task, invoke `@review-pipeline`. It runs:
 - Layer 0: Static analysis gate
 - Layer 1: Self-review against project checklist
-- Layer 2: 25 reviewers across 5 tiers in parallel, iterate until all grade >= 95/A+
+- Layer 2: **Triage** — inspect what changed, select 6-12 relevant reviewers from the 20-reviewer roster, iterate until all selected reviewers grade >= 95/A+
 - Max 5 rounds, then escalate to user
 
-### Reviewer Tiers
+### Reviewer Roster (20 available — select 6-12 per PR)
 
-| Tier | Reviewers | Focus |
-|------|-----------|-------|
-| **Tier 1 — Core Quality** (6) | architect, code, security, ux, testing, performance | Always relevant |
-| **Tier 2 — Domain-Specific** (6) | auth-session, data-integrity, error-handling, i18n-rtl, api-contract, state-management | Most PRs |
+| Tier | Reviewers | Select When |
+|------|-----------|-------------|
+| **Tier 1 — Core Quality** (6) | architect, code, security, ux, testing, performance | code-reviewer always; others when relevant |
+| **Tier 2 — Domain-Specific** (6) | auth-session, data-integrity, error-handling, i18n-rtl, api-contract, state-management | When that domain is touched |
 | **Tier 3 — Infrastructure** (4) | offline-network, observability, dependency, ci-cd | When touching infra/deps/CI |
-| **Tier 4 — Adversarial** (4) | edge-case, race-condition, regression, user-abuse | Critical PRs |
-| **Tier 5 — Orchestration** (5) | review-pipeline, plan-executor, etc. | Always runs |
+| **Tier 4 — Adversarial** (4) | edge-case, race-condition, regression, user-abuse | Critical/risky PRs |
 
 ### Executor Subagent Rules
 
