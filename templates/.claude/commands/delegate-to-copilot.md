@@ -60,13 +60,13 @@ Type: IMPLEMENTATION
 - [ ] All tests pass
 - [ ] Lint clean
 - [ ] Typecheck clean
-- [ ] All 25 reviewers grade >= 95/A+
+- [ ] All selected reviewers grade >= 95/A+
 
 ## Execution Instructions
 1. Read this entire plan
 2. Execute tasks by phase (sequential phases, parallel within)
 3. Run verification gate after all tasks
-4. Invoke @review-pipeline
+4. Invoke @copilot-review (triage → select 6-12 reviewers → iterate to A+)
 5. Create PR with grades table
 6. Output results to copilot-results.md
 
@@ -88,7 +88,7 @@ Branch: main
 Type: REVIEW + FIX
 
 ## Objective
-Review the following code and fix all findings until all 25 reviewers grade >= 95/A+.
+Review the following code and fix all findings until all selected reviewers grade >= 95/A+.
 
 ## What to Review
 [List of PRs, files, or changes to audit]
@@ -102,9 +102,9 @@ Review the following code and fix all findings until all 25 reviewers grade >= 9
 ## Execution Instructions
 1. Create a new branch: `fix/copilot-audit-[date]`
 2. Read ALL files listed above
-3. Invoke @review-pipeline on these files
-4. Fix ALL findings (BLOCK + WARN + INFO) from all 25 reviewers
-5. Re-run @review-pipeline until all grade >= 95/A+
+3. Invoke @copilot-review on these files
+4. Fix ALL findings (BLOCK + WARN + INFO) from all selected reviewers
+5. Re-run @copilot-review until all grade >= 95/A+
 6. Run verification gate (tests + lint + typecheck)
 7. Create PR with grades table
 8. Output results to copilot-results.md
@@ -113,7 +113,7 @@ Review the following code and fix all findings until all 25 reviewers grade >= 9
 [Specific areas to focus on, based on what the PRs did]
 
 ## Acceptance Criteria
-- [ ] All 25 reviewers grade >= 95/A+
+- [ ] All selected reviewers grade >= 95/A+
 - [ ] All tests pass
 - [ ] Lint clean
 - [ ] Typecheck clean

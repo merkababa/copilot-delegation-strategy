@@ -4,7 +4,7 @@ Claude Code → Copilot CLI delegation framework for 60% cost reduction with equ
 
 ## What This Is
 
-A complete framework for using Claude Code CLI for planning/interactive work and GitHub Copilot CLI for sprint execution, with a 25-reviewer pipeline that iterates to 95/A+.
+A complete framework for using Claude Code CLI for planning/interactive work and GitHub Copilot CLI for sprint execution, with a triage-based review that selects 6-12 reviewers from a 20-reviewer roster and iterates to 95/A+.
 
 ## Cost Savings
 
@@ -17,7 +17,7 @@ A complete framework for using Claude Code CLI for planning/interactive work and
 ```
 Claude Code              Copilot CLI              Claude Code
 /delegate-to-copilot → @plan-executor → /review-copilots-work
-                        └→ @review-pipeline (25 reviewers, iterate to A+)
+                        └→ @copilot-review (triage → 6-12 reviewers → iterate to A+)
 ```
 
 ## Quick Start

@@ -9,7 +9,7 @@
 
 ### Step 1: Copy Template Files
 
-Copy the following 25 files into your project:
+Copy the following 26 files into your project:
 
 ```
 templates/
@@ -18,6 +18,7 @@ templates/
 │   └── agents/
 │       ├── plan-executor.agent.md     → YOUR_PROJECT/.github/agents/plan-executor.agent.md
 │       ├── review-pipeline.agent.md   → YOUR_PROJECT/.github/agents/review-pipeline.agent.md
+│       ├── copilot-review.agent.md    → YOUR_PROJECT/.github/agents/copilot-review.agent.md
 │       │
 │       │  Tier 1 — Core Quality (6 reviewers)
 │       ├── architect-reviewer.agent.md
@@ -64,27 +65,25 @@ Each file has `[CUSTOMIZE]` markers. Replace them with your project's:
 - Project-specific review concerns
 - Project-specific checklist (if you have one like EXECUTOR_CHECKLIST.md)
 
-### Step 3: Add Override to CLAUDE.md
-
-Add this to your existing CLAUDE.md in the Code Review section:
-
-```markdown
-> **Copilot override:** When running in Copilot CLI or VS Code Copilot,
-> IGNORE this section and follow `.github/copilot-instructions.md` review pipeline instead
-> (25 reviewers across 5 tiers, iterate to 95/A+, max 5 rounds).
-```
-
-### Step 4: Test
+### Step 3: Test
 
 1. In Claude Code: `/delegate-to-copilot <describe a small task>`
 2. In Copilot CLI: `@plan-executor execute copilot-plan.md`
 3. Back in Claude Code: `/review-copilots-work`
+
+### Key Agents
+
+| Agent | Purpose |
+|-------|---------|
+| `@plan-executor` | Reads `copilot-plan.md` and executes all tasks |
+| `@copilot-review` | Copilot-specific: triages changes, selects 6-12 reviewers from 20-reviewer roster, iterates to A+ |
+| `@review-pipeline` | Standard 6-reviewer pipeline (NOT modified by this framework) |
 
 ### Workflow Summary
 
 ```
 Claude Code                     Copilot CLI                     Claude Code
 /delegate-to-copilot  ──►  @plan-executor  ──►  /review-copilots-work
-    generates plan          executes + @review-pipeline      verifies quality
-                            └→ 25 reviewers, iterate to A+
+    generates plan          executes + @copilot-review          verifies quality
+                            └→ triage, 6-12 reviewers, iterate to A+
 ```

@@ -3,7 +3,7 @@
 ## TL;DR
 
 - **Keep 1x Claude Code Max $200/mo** — for interactive work, quick questions, planning, and small messages (flat rate = cheaper for high-volume back-and-forth)
-- **Add Copilot Pro+ $39/mo** — for sprint execution with Opus 4.6 everywhere (all 25 reviewers + executors)
+- **Add Copilot Pro+ $39/mo** — for sprint execution with Opus 4.6 everywhere (20 reviewers (6-12 selected per PR) + executors)
 - **Drop 2x Max accounts** — saving **$361/month (60%)**
 - **Total: $239/month** instead of $600/month, with equal or better quality
 
@@ -12,7 +12,7 @@
 ### Verified Facts (Corrected from Earlier Errors)
 
 1. **Copilot CLI supports per-subagent model selection** — `model:` frontmatter in `.agent.md` works in CLI (user-confirmed March 2026)
-2. **No hard subagent limit** in either Claude Code or Copilot CLI — user runs 25 reviewers successfully in both
+2. **No hard subagent limit** in either Claude Code or Copilot CLI — user runs 20 reviewers (6-12 selected per PR) successfully in both
 3. **160K context is sufficient** for all projects — verified against emuni (66K LOC), machmad (15K LOC), tortit (50K LOC), zap-killer (41K LOC). Largest PR (~15 files) uses ~75-100K tokens, well within 160K
 4. **Opus 4.6 at 3x multiplier in Copilot is still massively cheaper** than Claude Code Max — 500 Opus PR sessions/month for $39 vs unlimited for $200
 5. **Model downgrade restriction**: subagents can't exceed orchestrator's multiplier tier, but Opus orchestrator (3x) allows ALL models as subagents
@@ -42,7 +42,7 @@ Your detailed plans ARE the harness. Opus in Copilot (160K) executing a well-spe
 │  ├── Reads plan.md / issue description              │
 │  ├── All subagents: Opus 4.6 (no model tiering)    │
 │  ├── Execution: autopilot / fleet mode              │
-│  ├── Reviews: 25 reviewer subagents (Opus 4.6)     │
+│  ├── Reviews: @copilot-review (6-12 of 20, Opus)   │
 │  └── Opens PR with self-review                      │
 │                                                     │
 │  Budget: 1,500 premium reqs/mo                      │
@@ -55,7 +55,7 @@ Your detailed plans ARE the harness. Opus in Copilot (160K) executing a well-spe
 
 ### Opus Everywhere (No Tiering)
 
-**All agents — orchestrator, executors, and all 25 reviewers — use `claude-opus-4-6` (3x multiplier).**
+**All agents — orchestrator, executors, and 20 reviewers (6-12 selected per PR) — use `claude-opus-4-6` (3x multiplier).**
 
 Earlier iterations considered Haiku/Sonnet tiering by task complexity. This was replaced by "Opus everywhere" because:
 
@@ -65,7 +65,7 @@ Earlier iterations considered Haiku/Sonnet tiering by task complexity. This was 
 
 ### Custom Agent Definitions
 
-Create `.github/agents/` in each project with 25 agent files (see `templates/SETUP.md` for the full list):
+Create `.github/agents/` in each project with 23 agent files (see `templates/SETUP.md` for the full list):
 
 ```yaml
 # .github/agents/security-reviewer.agent.md
@@ -96,7 +96,7 @@ You are a security-focused code reviewer. Check for:
 | "Fix this small bug" (interactive) | **Claude Code** | Small messages, flat rate cheaper |
 | Planning sprint with 10 tasks | **Claude Code** | Long thinking, 1M context if needed |
 | Executing sprint (10 PRs) | **Copilot CLI** | 10 × 3 = 30 reqs ($1.20 overage if any) |
-| Code review (25 reviewers) | **Copilot CLI** | Per-subagent model selection works |
+| Code review (20 reviewers (6-12 selected per PR)) | **Copilot CLI** | Per-subagent model selection works |
 | Full app review (major release) | **Either** | Both can do it; Claude Code if >160K context needed |
 | Roadmap across all 6 projects | **Claude Code** | May need cross-project context |
 

@@ -12,8 +12,12 @@ Research, templates, and automation for delegating sprint execution from Claude 
 
 ### Templates (Reusable — copy to any project)
 - `templates/SETUP.md` — Step-by-step setup guide for new projects
-- `templates/.github/copilot-instructions.md` — Copilot-specific review pipeline (25 reviewers across 5 tiers, iterate to A+)
-- `templates/.github/agents/` — All agent definitions (plan-executor, review-pipeline, 20 reviewers across 4 tiers)
+- `templates/.github/copilot-instructions.md` — Copilot-specific config (references @copilot-review, NOT @review-pipeline)
+- `templates/.github/agents/` — All agent definitions:
+  - `plan-executor` — orchestrator/coordinator for Copilot task execution
+  - `review-pipeline` — standard 6-reviewer pipeline (NOT modified by this framework)
+  - `copilot-review` — Copilot-specific: triages changes, selects 6-12 from 20-reviewer roster, iterates to A+
+  - 20 reviewer agents across 4 tiers
 - `templates/.claude/commands/` — Claude Code skills (delegate-to-copilot, review-copilots-work)
 - `templates/AGENTS.md` — Multi-agent orchestration instructions
 
@@ -28,8 +32,13 @@ All templates have `[CUSTOMIZE]` markers for project-specific values.
 ```
 Claude Code                     Copilot CLI                     Claude Code
 /delegate-to-copilot  ──►  @plan-executor  ──►  /review-copilots-work
-                            └─► @review-pipeline (25 reviewers, iterate to A+)
+                            └─► @copilot-review (triage → 6-12 reviewers → iterate to A+)
 ```
+
+## Key Distinction
+
+- `@review-pipeline` = standard 6-reviewer pipeline (unchanged, general-purpose)
+- `@copilot-review` = Copilot-only enhanced review (triage, 20-reviewer roster, select 6-12)
 
 ## Applied To
 - BabyTracker (pilot project — fully configured, March 2026)

@@ -4,7 +4,7 @@
 - 3x Claude Max $200/mo accounts = **$600/month ($7,200/year)**
 - All 3 accounts fully drained
 - 6 concurrent projects: BabyTracker, emuni, Machmad, Tortit, vaad-bayit, zap-killer
-- Roadmaps, 4-5 agent pipeline reviews, 25-reviewer app/phase reviews
+- Roadmaps, 4-5 agent pipeline reviews, @copilot-review (6-12 of 20 reviewers per PR)
 - 90% of execution delegated to Sonnet 4.6 by Opus orchestrator
 
 ## Proposed Setup

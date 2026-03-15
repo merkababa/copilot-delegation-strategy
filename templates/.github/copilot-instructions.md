@@ -1,60 +1,34 @@
 # [PROJECT_NAME] — Copilot Instructions
 
 > Base project rules and conventions are in `CLAUDE.md` (loaded automatically for Claude models).
-> This file contains Copilot-specific enhancements — primarily the enhanced review pipeline.
+> This file contains Copilot-specific configuration.
 
 ---
 
 ## Model Policy (ABSOLUTE)
 
-**All agents use `claude-opus-4.6`. No exceptions. No model tiering. No cost optimization.**
+**All agents use `claude-opus-4-6`. No exceptions. No model tiering. No cost optimization.**
 
-- Orchestrator: Opus 4.6
+- Orchestrator (coordinator): Opus 4.6
 - Executors: Opus 4.6
 - Reviewers: Opus 4.6
 - Every subagent, every role, every task: Opus 4.6
 
 ---
 
-## Enhanced Review Pipeline (OVERRIDES CLAUDE.md Review Section)
+## Copilot Review Pipeline
 
-**When running in Copilot CLI or VS Code Copilot, IGNORE the review pipeline in CLAUDE.md. This pipeline REPLACES it entirely.**
+**Copilot uses `@copilot-review` for code review — NOT `@review-pipeline`.**
 
-**Core principle: inspect what changed, then select 6-12 relevant reviewers from the 20-reviewer roster. Never blindly run all reviewers.**
+`@copilot-review` is the enhanced, Copilot-specific review agent that triages changes and selects 6-12 relevant reviewers from the 20-reviewer roster. The standard `@review-pipeline` (6 fixed reviewers) is for general use and is NOT modified by this delegation framework.
 
-### Layer 0: Static Analysis Gate
+### How It Works
 
-```bash
-# [CUSTOMIZE] Replace with your project's commands
-npm run lint          # Linter
-npx tsc --noEmit      # Type checker
-npm test              # Test suite
-```
+1. **Layer 0**: Static analysis gate (lint, typecheck, tests)
+2. **Layer 1**: Self-review against project checklist
+3. **Layer 2**: Triage → Select 6-12 reviewers → Run in parallel → Iterate to A+ (max 5 rounds)
 
-Only code that passes Layer 0 proceeds to reviews.
-
-### Layer 1: Self-Review (Orchestrator)
-
-Before spawning reviewers:
-1. Read project quality checklist (if exists)
-   <!-- [CUSTOMIZE] Replace with your checklist path, or remove if none -->
-2. Verify every changed file against checklist items
-3. Fix ALL violations immediately
-4. Re-run Layer 0
-5. Then proceed to Layer 2
-
-### Layer 2: Triage → Select → Review
-
-#### Step 1: Triage — Inspect What Changed
-
-Analyze the diff to classify:
-- **Domains touched**: UI, API, auth, data/schema, state, payments, i18n, tests, infra, CI/CD, deps
-- **Risk level**: routine (docs, tests, refactors) vs critical (auth, payments, data migrations)
-- **Scope**: narrow (1-3 files) vs broad (many files, cross-cutting)
-
-#### Step 2: Select 6-12 Reviewers
-
-Pick from the 20-reviewer roster based on what the PR actually touches.
+### Reviewer Roster (20 available — @copilot-review selects 6-12 per PR)
 
 **Tier 1 — Core Quality (select all that apply):**
 
@@ -104,10 +78,6 @@ Pick from the 20-reviewer roster based on what the PR actually touches.
 - When in doubt, include the reviewer
 - For critical domains (auth, payments, migrations): include all of Tier 4
 
-#### Step 3: Run Selected Reviewers in Parallel (/fleet)
-
-Each reviewer receives the diff, changed file list, and grades on 0-100 with BLOCK/WARN/INFO findings.
-
 ### Grading Scale
 
 - **A+ (95-100)**: Exemplary — no issues, production-ready
@@ -115,23 +85,6 @@ Each reviewer receives the diff, changed file list, and grades on 0-100 with BLO
 - **B+ (85-89)**: 1-2 fixable issues (WARN level)
 - **B (80-84)**: 3-5 fixable issues
 - **C or below**: Major issues (BLOCK level)
-
-### Cooperative Iteration Protocol (Max 5 Rounds)
-
-**Target: ALL selected reviewers at 95/A+ or above. Iterate until achieved or 5 rounds exhausted.**
-
-```
-Round 1: Selected reviewers run in parallel
-  → Collect ALL findings (BLOCK, WARN, INFO)
-  → Fix EVERYTHING in one batch
-  → Re-run Layer 0
-Round 2: Re-run SAME selected reviewers
-  → If ALL ≥ 95/A+ → DONE
-  → If any < 95/A+ → fix and iterate
-  → If fixes touched a new domain → add that domain's reviewer
-Round N: Continue until ALL pass or Round 5
-  → After Round 5 if not at A+ → ESCALATE to user
-```
 
 ### Reviewer Rules
 

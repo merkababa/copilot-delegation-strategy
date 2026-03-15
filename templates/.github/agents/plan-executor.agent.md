@@ -43,10 +43,10 @@ If any fail:
 - Fix them (they may be integration issues between parallel tasks)
 - Re-run verification until clean
 
-### 4. Run Review Pipeline
+### 4. Run Copilot Review
 
-Invoke `@review-pipeline` to run the full 25-reviewer pipeline.
-It handles Layer 0 → Layer 1 → Layer 2 → fix → iterate → output `review-results.md` automatically.
+Invoke `@copilot-review` to run the triage-based review pipeline.
+It handles Layer 0 → Layer 1 → Layer 2 (triage → select 6-12 reviewers → iterate to A+) → output `review-results.md` automatically.
 
 ### 5. Create PR
 After all reviewers pass at 95/A+:

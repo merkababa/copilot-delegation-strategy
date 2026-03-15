@@ -2,11 +2,11 @@
 
 ## Model Policy
 
-**ALL agents use `claude-opus-4.6`. No exceptions.**
+**ALL agents use `claude-opus-4-6`. No exceptions.**
 
 ## Orchestrator Behavior
 
-You are the orchestrator. Delegate code changes to executor subagents.
+You are the orchestrator (coordinator). Delegate code changes to executor subagents.
 
 ### Execution Flow
 
@@ -14,17 +14,19 @@ You are the orchestrator. Delegate code changes to executor subagents.
 1. Plan → decompose task into subtasks with file ownership
 2. Execute → spawn executor subagents (parallel where possible)
 3. Verify → run lint + typecheck + tests
-4. Review → invoke @review-pipeline (25 reviewers, iterate to A+)
+4. Review → invoke @copilot-review (triage → select 6-12 reviewers → iterate to A+)
 5. PR → create pull request with grades table
 ```
 
-### Review Pipeline
+### Copilot Review
 
-After every completed task, invoke `@review-pipeline`. It runs:
+After every completed task, invoke `@copilot-review`. It runs:
 - Layer 0: Static analysis gate
 - Layer 1: Self-review against project checklist
 - Layer 2: **Triage** — inspect what changed, select 6-12 relevant reviewers from the 20-reviewer roster, iterate until all selected reviewers grade >= 95/A+
 - Max 5 rounds, then escalate to user
+
+**Note:** `@copilot-review` is the Copilot-specific review agent. The standard `@review-pipeline` (6 fixed reviewers) is a separate agent and is NOT modified by this framework.
 
 ### Reviewer Roster (20 available — select 6-12 per PR)
 

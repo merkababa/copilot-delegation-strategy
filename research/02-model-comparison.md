@@ -47,7 +47,7 @@ This means: the **quality of your plan and task decomposition** matters far more
 
 ## Final Decision (March 2026)
 
-**Opus 4.6 everywhere — not GPT-5.2-Codex.** While GPT-5.2-Codex has a better cost ratio (1x multiplier, 400K context), the user chose Claude Opus 4.6 for all agents (orchestrator, executors, and all 25 reviewers) because:
+**Opus 4.6 everywhere — not GPT-5.2-Codex.** While GPT-5.2-Codex has a better cost ratio (1x multiplier, 400K context), the user chose Claude Opus 4.6 for all agents (orchestrator, executors, and all 20 reviewers) because:
 
 1. Quality over cost — budget headroom is massive (20% utilization of Pro+ at Opus 3x)
 2. Consistency — same model family as Claude Code Max, same reasoning patterns
