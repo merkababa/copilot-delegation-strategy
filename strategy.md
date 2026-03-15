@@ -55,7 +55,7 @@ Your detailed plans ARE the harness. Opus in Copilot (160K) executing a well-spe
 
 ### Opus Everywhere (No Tiering)
 
-**All agents — orchestrator, executors, and all 25 reviewers — use `claude-opus-4.6` (3x multiplier).**
+**All agents — orchestrator, executors, and all 25 reviewers — use `claude-opus-4-6` (3x multiplier).**
 
 Earlier iterations considered Haiku/Sonnet tiering by task complexity. This was replaced by "Opus everywhere" because:
 
@@ -72,7 +72,7 @@ Create `.github/agents/` in each project with 25 agent files (see `templates/SET
 ---
 name: security-reviewer
 description: Reviews code for OWASP Top 10, auth issues, injection, XSS
-model: claude-opus-4.6
+model: claude-opus-4-6
 tools:
   - read_file
   - search_code
