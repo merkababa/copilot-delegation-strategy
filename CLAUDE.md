@@ -33,8 +33,9 @@ Claude Code                     Copilot CLI                     Claude Code
 
 ## Applied To
 - BabyTracker (pilot project — fully configured, March 2026)
-- emuni
-- Machmad
+- Nanny / emuni (C:\Users\t2tec\Projects\Nanny)
+- PET_CARE_APP_PLAN / Machmad (C:\Users\t2tec\Israeli_Premium_App_Project\PET_CARE_APP_PLAN)
 - Tortit
 - vaad-bayit
 - zap-killer
+- Israeli_Premium_App_Project (parent repo)

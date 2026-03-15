@@ -33,4 +33,4 @@ See [templates/SETUP.md](templates/SETUP.md) for setup instructions.
 
 ## Applied To
 
-- BabyTracker, emuni, Machmad, Tortit, vaad-bayit, zap-killer
+- BabyTracker, Nanny (emuni), PET_CARE_APP_PLAN (Machmad), Tortit, vaad-bayit, zap-killer
