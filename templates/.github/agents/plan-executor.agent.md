@@ -52,6 +52,7 @@ It handles Layer 0 → Layer 1 → Layer 2 → fix → iterate → output `revie
 After all reviewers pass at 95/A+:
 ```bash
 gh pr create --title "[from plan] <objective>" --body "<grades table + summary>"
+gh pr edit --add-reviewer @copilot
 ```
 
 ### 6. Update SESSION_STATE.md
