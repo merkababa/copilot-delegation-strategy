@@ -18,7 +18,10 @@ Research, templates, and automation for delegating sprint execution from Claude 
   - `review-pipeline` — standard 6-reviewer pipeline (NOT modified by this framework)
   - `copilot-review` — Copilot-specific: triages changes, selects 6-12 from 20-reviewer roster, iterates to A+
   - 20 reviewer agents across 4 tiers
-- `templates/.claude/commands/` — Claude Code skills (delegate-to-copilot, review-copilots-work)
+- `templates/.claude/commands/` — Claude Code skills:
+  - `delegate-to-copilot` — generate single-PR plans with file manifest, verify script, 3-5 reviewers
+  - `review-copilots-work` — manifest compliance, interface check, 3-5 reviewers to A+, anti-pattern checklist
+  - `split-plan` — decompose large tasks into sequential single-PR plans with dependency ordering
 - `templates/AGENTS.md` — Multi-agent orchestration instructions
 
 All templates have `[CUSTOMIZE]` markers for project-specific values.
@@ -27,13 +30,23 @@ All templates have `[CUSTOMIZE]` markers for project-specific values.
 - `task-template.md` — Template for generating Copilot-compatible task blocks
 - `automation-plan.md` — Phased rollout plan (manual → semi-auto → full auto)
 
-## Workflow (3 Skills)
+## Workflow (4 Skills)
 
 ```
 Claude Code                     Copilot CLI                     Claude Code
-/delegate-to-copilot  ──►  @plan-executor  ──►  /review-copilots-work
-                            └─► @copilot-review (triage → 6-12 reviewers → iterate to A+)
+/split-plan (if large task)
+  └─► /delegate-to-copilot  ──►  @plan-executor  ──►  /review-copilots-work
+       (1 plan = 1 PR)           └─► @copilot-review       (3-5 reviewers → A+)
+                                     (triage → select reviewers → iterate)
 ```
+
+### Key Design Principles (v2 — March 2026)
+- **One plan = one PR** — never multi-phase plans (use /split-plan instead)
+- **Max 10 files per plan** — keeps scope reviewable
+- **3-5 relevant reviewers** — not all 20; selected by what the task touches
+- **Mandatory verify script** — Copilot runs it; Claude validates on review
+- **File manifest** — strict list of files to touch; off-manifest changes flagged
+- **Anti-pattern checklist** — catches common Copilot mistakes (inlined code, test/impl mismatch)
 
 ## Key Distinction
 
